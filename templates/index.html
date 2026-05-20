@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>
+        AgroVision
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <!-- CABEÇALHO -->
+
+    <header>
+
+        <div class="logo-container">
+
+            <h1>
+                AgroVision
+            </h1>
+
+            <p>
+                Monitoramento inteligente de folhas de alface utilizando visão computacional.
+            </p>
+
+        </div>
+
+    </header>
+
+    <main>
+
+        <!-- PAINEL PRINCIPAL -->
+
+        <section class="painel-principal">
+
+            <!-- CÂMERA -->
+
+            <section class="card camera-card">
+
+                <h2>
+                    Visualização da Câmera
+                </h2>
+
+                <img
+                    class="camera"
+                    src="{{ url_for('video') }}"
+                >
+
+            </section>
+
+            <!-- CONTROLE -->
+
+            <section class="card controle-card">
+
+                <h2>
+                    Controle da Plataforma
+                </h2>
+
+                <div class="controle">
+
+                    <!-- FRENTE -->
+
+                    <form
+                        action="{{ url_for('controle', comando='F') }}"
+                        method="POST"
+                    >
+
+                        <button type="submit">
+                            ↑
+                        </button>
+
+                    </form>
+
+                    <!-- ESQUERDA / PARAR / DIREITA -->
+
+                    <div class="linha-controle">
+
+                        <form
+                            action="{{ url_for('controle', comando='L') }}"
+                            method="POST"
+                        >
+
+                            <button type="submit">
+                                ←
+                            </button>
+
+                        </form>
+
+                        <form
+                            action="{{ url_for('controle', comando='S') }}"
+                            method="POST"
+                        >
+
+                            <button type="submit">
+                                ■
+                            </button>
+
+                        </form>
+
+                        <form
+                            action="{{ url_for('controle', comando='R') }}"
+                            method="POST"
+                        >
+
+                            <button type="submit">
+                                →
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                    <!-- RÉ -->
+
+                    <form
+                        action="{{ url_for('controle', comando='B') }}"
+                        method="POST"
+                    >
+
+                        <button type="submit">
+                            ↓
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+        </section>
+
+        <!-- BOTÃO CAPTURAR -->
+
+        <section class="actions">
+
+            <form
+                action="{{ url_for('capturar') }}"
+                method="POST"
+            >
+
+                <button type="submit">
+                    Capturar imagem
+                </button>
+
+            </form>
+
+        </section>
+
+        <!-- ÚLTIMA IMAGEM -->
+
+        <section class="card">
+
+            <h2>
+                Última imagem capturada
+            </h2>
+
+            <img
+                class="camera"
+                src="{{ url_for('static', filename='imagem.jpg') }}?v={{ range(1, 100000) | random }}"
+            >
+
+        </section>
+
+        <!-- CLASSIFICAÇÃO -->
+
+        <section class="actions">
+
+            <form
+                action="{{ url_for('classificar') }}"
+                method="POST"
+            >
+
+                <button type="submit">
+                    Classificar imagem
+                </button>
+
+            </form>
+
+        </section>
+
+        <!-- RESULTADO -->
+
+        <section class="card resultado">
+
+            <h2>
+                Resultado da Classificação
+            </h2>
+
+            <p>
+                {{ resultado }}
+            </p>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
