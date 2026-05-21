@@ -2,6 +2,10 @@ from flask import Flask, render_template, Response, redirect, url_for
 from camera import gerar_frames, capturar_imagem
 from modelo import classificar_imagem
 from esp32 import enviar_comando
+from esp32 import conectar_esp32
+
+
+conectar_esp32("COM3", 115200)
 
 app = Flask(__name__)
 
@@ -48,6 +52,13 @@ def controle(comando):
     enviar_comando(comando)
     return redirect(url_for("index"))
 
+@app.route("/velocidade/<int:valor>", methods=["POST"])
+def velocidade(valor):
+
+    enviar_comando(f"V{valor}")
+
+    return ("", 204)
+
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=False)

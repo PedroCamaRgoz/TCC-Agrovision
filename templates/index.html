@@ -134,6 +134,23 @@
 
                 </div>
 
+                      <div style="margin-top: 20px; text-align: center;">
+
+               <p>Velocidade</p>
+
+               <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value="50"
+                  id="velocidadeSlider"
+               >
+
+               <span id="valorVelocidade">50</span>%
+
+             </div>
+
+
             </section>
 
         </section>
@@ -185,6 +202,7 @@
 
             </form>
 
+      
         </section>
 
         <!-- RESULTADO -->
@@ -204,5 +222,97 @@
     </main>
 
 </body>
+
+<script>
+
+const teclas = new Set();
+
+let ultimoComando = "";
+
+function enviarComando(comando) {
+
+    if (comando === ultimoComando)
+        return;
+
+    ultimoComando = comando;
+
+    fetch(`/controle/${comando}`, {
+        method: "POST"
+    });
+}
+
+function atualizarComando() {
+
+    let comando = "S";
+
+    const w = teclas.has("w") || teclas.has("arrowup");
+    const s = teclas.has("s") || teclas.has("arrowdown");
+    const a = teclas.has("a") || teclas.has("arrowleft");
+    const d = teclas.has("d") || teclas.has("arrowright");
+
+    if (w && d) {
+
+        comando = "G";
+
+    } else if (w && a) {
+
+        comando = "H";
+
+    } else if (s && d) {
+
+        comando = "I";
+
+    } else if (s && a) {
+
+        comando = "J";
+
+    } else if (w) {
+
+        comando = "F";
+
+    } else if (s) {
+
+        comando = "B";
+
+    } else if (a) {
+
+        comando = "L";
+
+    } else if (d) {
+
+        comando = "R";
+    }
+
+    enviarComando(comando);
+}
+
+document.addEventListener("keydown", function(event) {
+
+    teclas.add(event.key.toLowerCase());
+
+    atualizarComando();
+});
+
+document.addEventListener("keyup", function(event) {
+
+    teclas.delete(event.key.toLowerCase());
+
+    atualizarComando();
+});
+
+const slider = document.getElementById("velocidadeSlider");
+const valorVelocidade = document.getElementById("valorVelocidade");
+
+slider.addEventListener("input", function() {
+
+    valorVelocidade.innerText = slider.value;
+
+    fetch(`/velocidade/${slider.value}`, {
+        method: "POST"
+    });
+
+});
+
+</script>
 
 </html>

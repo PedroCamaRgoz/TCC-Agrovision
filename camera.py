@@ -1,6 +1,6 @@
 import cv2
 
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(0, cv2.CAP_MSMF)
 
 camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
@@ -11,7 +11,7 @@ def gerar_frames():
         sucesso, frame = camera.read()
 
         if not sucesso:
-            break
+            continue
 
         ret, buffer = cv2.imencode(".jpg", frame)
 
